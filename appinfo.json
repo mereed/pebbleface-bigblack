@@ -4,7 +4,8 @@
         "bluetoothvibe": 2,
         "germanlang": 4,
         "hourlyvibe": 3,
-        "invert": 1
+        "invert": 1,
+        "russianlang": 5
     },
     "capabilities": [
         "configurable"
@@ -14,6 +15,41 @@
     "projectType": "native",
     "resources": {
         "media": [
+            {
+                "file": "images/russian-sat.png",
+                "name": "IMAGE_DAY_NAME_RUS_SAT",
+                "type": "png"
+            },
+            {
+                "file": "images/russian-fri.png",
+                "name": "IMAGE_DAY_NAME_RUS_FRI",
+                "type": "png"
+            },
+            {
+                "file": "images/russian-thu.png",
+                "name": "IMAGE_DAY_NAME_RUS_THU",
+                "type": "png"
+            },
+            {
+                "file": "images/russian-wed.png",
+                "name": "IMAGE_DAY_NAME_RUS_WED",
+                "type": "png"
+            },
+            {
+                "file": "images/russian-tue.png",
+                "name": "IMAGE_DAY_NAME_RUS_TUE",
+                "type": "png"
+            },
+            {
+                "file": "images/russian-mon.png",
+                "name": "IMAGE_DAY_NAME_RUS_MON",
+                "type": "png"
+            },
+            {
+                "file": "images/russian-sun.png",
+                "name": "IMAGE_DAY_NAME_RUS_SUN",
+                "type": "png"
+            },
             {
                 "file": "images/visitor-SUNDAY german.png",
                 "name": "IMAGE_DAY_NAME_SONNTAG",
@@ -280,7 +316,7 @@
     "shortName": "bigblack",
     "uuid": "7f60f29e-9eac-4a01-b2fb-c06b41aad688",
     "versionCode": 2,
-    "versionLabel": "1.7",
+    "versionLabel": "1.8",
     "watchapp": {
         "watchface": true
     }

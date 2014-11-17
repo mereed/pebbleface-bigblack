@@ -14,6 +14,7 @@ static int invert;
 static int bluetoothvibe;
 static int hourlyvibe;
 static int germanlang;
+static int russianlang;
 
 static bool appStarted = false;
 
@@ -22,7 +23,8 @@ enum {
   INVERT_KEY = 0x1,
   BLUETOOTHVIBE_KEY = 0x2,
   HOURLYVIBE_KEY = 0x3,
-  GERMAN_KEY = 0x4
+  GERMAN_KEY = 0x4,
+  RUSSIAN_KEY = 0x5
 };
 
 static GBitmap *separator_image;
@@ -64,6 +66,19 @@ const int DAY_NAME_IMAGE_GERMAN_RESOURCE_IDS[] = {
   RESOURCE_ID_IMAGE_DAY_NAME_SAMSTAG
 };
 
+static GBitmap *rday_name_image;
+static BitmapLayer *rday_name_layer;
+
+const int DAY_NAME_IMAGE_RUSSIAN_RESOURCE_IDS[] = {
+  RESOURCE_ID_IMAGE_DAY_NAME_RUS_SUN,
+  RESOURCE_ID_IMAGE_DAY_NAME_RUS_MON,
+  RESOURCE_ID_IMAGE_DAY_NAME_RUS_TUE,
+  RESOURCE_ID_IMAGE_DAY_NAME_RUS_WED,
+  RESOURCE_ID_IMAGE_DAY_NAME_RUS_THU,
+  RESOURCE_ID_IMAGE_DAY_NAME_RUS_FRI,
+  RESOURCE_ID_IMAGE_DAY_NAME_RUS_SAT
+};	
+	
 #define TOTAL_DATE_DIGITS 2	
 static GBitmap *date_digits_images[TOTAL_DATE_DIGITS];
 static BitmapLayer *date_digits_layers[TOTAL_DATE_DIGITS];
@@ -161,8 +176,6 @@ static void set_container_image(GBitmap **bmp_image, BitmapLayer *bmp_layer, con
 
 static void handle_tick(struct tm *tick_time, TimeUnits units_changed);
 
-
-
 static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tuple, const Tuple* old_tuple, void* context) {
 
 	switch (key) {
@@ -176,8 +189,8 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
       else {
         tick_timer_service_subscribe(MINUTE_UNIT, handle_tick);
 	  }
-	  
       break;
+		
      case INVERT_KEY:
       invert = new_tuple->value->uint8 != 0;
       persist_write_bool(INVERT_KEY, invert);
@@ -204,7 +217,20 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
   			layer_set_hidden(bitmap_layer_get_layer(day_name_layer), false);
 	  		layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), true);
         }
-      break;	
+      break;
+		
+	case RUSSIAN_KEY:
+      russianlang = new_tuple->value->uint8 != 0;
+	  persist_write_bool(RUSSIAN_KEY, russianlang);	  
+	
+		if (russianlang) {
+           layer_set_hidden(bitmap_layer_get_layer(day_name_layer), true);
+	  	   layer_set_hidden(bitmap_layer_get_layer(rday_name_layer), false);
+        }  else {
+  			layer_set_hidden(bitmap_layer_get_layer(day_name_layer), false);
+	  		layer_set_hidden(bitmap_layer_get_layer(rday_name_layer), true);
+        }
+      break;
   }
 }
 
@@ -263,11 +289,12 @@ unsigned short get_display_hour(unsigned short hour) {
 
 static void update_days(struct tm *tick_time) {
 
-  set_container_image(&gday_name_image, gday_name_layer, DAY_NAME_IMAGE_GERMAN_RESOURCE_IDS[tick_time->tm_wday], GPoint(66, 15));
-  set_container_image(&day_name_image, day_name_layer, DAY_NAME_IMAGE_RESOURCE_IDS[tick_time->tm_wday], GPoint(66, 15));
+  set_container_image(&rday_name_image, rday_name_layer, DAY_NAME_IMAGE_RUSSIAN_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 15));
+  set_container_image(&gday_name_image, gday_name_layer, DAY_NAME_IMAGE_GERMAN_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 15));
+  set_container_image(&day_name_image, day_name_layer, DAY_NAME_IMAGE_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 15));
 		
-  set_container_image(&date_digits_images[0], date_digits_layers[0], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday/10], GPoint(66, 145));
-  set_container_image(&date_digits_images[1], date_digits_layers[1], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday%10], GPoint(66, 155));
+  set_container_image(&date_digits_images[0], date_digits_layers[0], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday/10], GPoint(68, 145));
+  set_container_image(&date_digits_images[1], date_digits_layers[1], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday%10], GPoint(68, 155));
 }
 
 static void update_hours(struct tm *tick_time) {
@@ -354,7 +381,7 @@ static void init(void) {
 		
   separator_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_SEPARATOR);
   GRect frame = (GRect) {
-    .origin = { .x = 66, .y = 137 },
+    .origin = { .x = 68, .y = 137 },
     .size = separator_image->bounds.size
   };
   separator_layer = bitmap_layer_create(frame);
@@ -401,6 +428,8 @@ static void init(void) {
    layer_add_child(window_layer, bitmap_layer_get_layer(day_name_layer));	
    gday_name_layer = bitmap_layer_create(dummy_frame);
    layer_add_child(window_layer, bitmap_layer_get_layer(gday_name_layer));	
+	rday_name_layer = bitmap_layer_create(dummy_frame);
+   layer_add_child(window_layer, bitmap_layer_get_layer(rday_name_layer));	
 	
   for (int i = 0; i < TOTAL_TIME_DIGITS; ++i) {
     time_digits_layers[i] = bitmap_layer_create(dummy_frame);
@@ -425,6 +454,7 @@ static void init(void) {
     TupletInteger(BLUETOOTHVIBE_KEY, persist_read_bool(BLUETOOTHVIBE_KEY)),
     TupletInteger(HOURLYVIBE_KEY, persist_read_bool(HOURLYVIBE_KEY)),
     TupletInteger(GERMAN_KEY, persist_read_bool(GERMAN_KEY)),
+    TupletInteger(RUSSIAN_KEY, persist_read_bool(RUSSIAN_KEY)),
   };
   
   app_sync_init(&sync, sync_buffer, sizeof(sync_buffer), initial_values, ARRAY_LENGTH(initial_values),
@@ -476,6 +506,10 @@ static void deinit(void) {
   layer_remove_from_parent(bitmap_layer_get_layer(gday_name_layer));
   bitmap_layer_destroy(gday_name_layer);
   gbitmap_destroy(gday_name_image);
+	
+  layer_remove_from_parent(bitmap_layer_get_layer(rday_name_layer));
+  bitmap_layer_destroy(rday_name_layer);
+  gbitmap_destroy(rday_name_image);
 	
   for (int i = 0; i < TOTAL_DATE_DIGITS; i++) {
     layer_remove_from_parent(bitmap_layer_get_layer(date_digits_layers[i]));
