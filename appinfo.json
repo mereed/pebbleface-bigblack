@@ -2,19 +2,233 @@
     "appKeys": {
         "blink": 0,
         "bluetoothvibe": 2,
-        "germanlang": 4,
         "hourlyvibe": 3,
         "invert": 1,
-        "russianlang": 5
+        "language": 4
     },
     "capabilities": [
         "configurable"
     ],
-    "companyName": "markr",
+    "companyName": "chops",
     "longName": "bigblack",
     "projectType": "native",
     "resources": {
         "media": [
+            {
+                "file": "images/bigblack-spanish-wed.png",
+                "name": "IMAGE_DAY_NAME_SP_WED",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-spanish-tue.png",
+                "name": "IMAGE_DAY_NAME_SP_TUE",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-spanish-thu.png",
+                "name": "IMAGE_DAY_NAME_SP_THU",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-spanish-sun.png",
+                "name": "IMAGE_DAY_NAME_SP_SUN",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-spanish-sat.png",
+                "name": "IMAGE_DAY_NAME_SP_SAT",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-spanish-mon.png",
+                "name": "IMAGE_DAY_NAME_SP_MON",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-spanish-fri.png",
+                "name": "IMAGE_DAY_NAME_SP_FRI",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-kor-wed.png",
+                "name": "IMAGE_DAY_NAME_KO_WED",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-kor-tue.png",
+                "name": "IMAGE_DAY_NAME_KO_TUE",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-kor-thu.png",
+                "name": "IMAGE_DAY_NAME_KO_THU",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-kor-sun.png",
+                "name": "IMAGE_DAY_NAME_KO_SUN",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-kor-sat.png",
+                "name": "IMAGE_DAY_NAME_KO_SAT",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-kor-mon.png",
+                "name": "IMAGE_DAY_NAME_KO_MON",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-kor-fri.png",
+                "name": "IMAGE_DAY_NAME_KO_FRI",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-jap-wed.png",
+                "name": "IMAGE_DAY_NAME_JA_WED",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-jap-tue.png",
+                "name": "IMAGE_DAY_NAME_JA_TUE",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-jap-thu.png",
+                "name": "IMAGE_DAY_NAME_JA_THU",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-jap-sun.png",
+                "name": "IMAGE_DAY_NAME_JA_SUN",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-jap-sat.png",
+                "name": "IMAGE_DAY_NAME_JA_SAT",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-jap-mon.png",
+                "name": "IMAGE_DAY_NAME_JA_MON",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-jap-fri.png",
+                "name": "IMAGE_DAY_NAME_JA_FRI",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-ital-wed.png",
+                "name": "IMAGE_DAY_NAME_IT_WED",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-ital-tue.png",
+                "name": "IMAGE_DAY_NAME_IT_TUE",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-ital-thu.png",
+                "name": "IMAGE_DAY_NAME_IT_THU",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-ital-sun.png",
+                "name": "IMAGE_DAY_NAME_IT_SUN",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-ital-sat.png",
+                "name": "IMAGE_DAY_NAME_IT_SAT",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-ital-mon.png",
+                "name": "IMAGE_DAY_NAME_IT_MON",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-ital-fri.png",
+                "name": "IMAGE_DAY_NAME_IT_FRI",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-french-wed.png",
+                "name": "IMAGE_DAY_NAME_FRE_WED",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-french-tue.png",
+                "name": "IMAGE_DAY_NAME_FRE_TUE",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-french-thu.png",
+                "name": "IMAGE_DAY_NAME_FRE_THU",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-french-sun.png",
+                "name": "IMAGE_DAY_NAME_FRE_SUN",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-french-sat.png",
+                "name": "IMAGE_DAY_NAME_FRE_SAT",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-french-mon.png",
+                "name": "IMAGE_DAY_NAME_FRE_MON",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-french-fri.png",
+                "name": "IMAGE_DAY_NAME_FRE_FRI",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-chi-wed.png",
+                "name": "IMAGE_DAY_NAME_CH_WED",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-chi-tue.png",
+                "name": "IMAGE_DAY_NAME_CH_TUE",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-chi-thu.png",
+                "name": "IMAGE_DAY_NAME_CH_THU",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-chi-sun.png",
+                "name": "IMAGE_DAY_NAME_CH_SUN",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-chi-sat.png",
+                "name": "IMAGE_DAY_NAME_CH_SAT",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-chi-mon.png",
+                "name": "IMAGE_DAY_NAME_CH_MON",
+                "type": "png"
+            },
+            {
+                "file": "images/bigblack-chi-fri.png",
+                "name": "IMAGE_DAY_NAME_CH_FRI",
+                "type": "png"
+            },
+            {
+                "file": "images/icon_battery100.png",
+                "name": "IMAGE_BATTERY100",
+                "type": "png"
+            },
             {
                 "file": "images/russian-sat.png",
                 "name": "IMAGE_DAY_NAME_RUS_SAT",
@@ -313,10 +527,11 @@
             }
         ]
     },
+    "sdkVersion": "2",
     "shortName": "bigblack",
     "uuid": "7f60f29e-9eac-4a01-b2fb-c06b41aad688",
-    "versionCode": 2,
-    "versionLabel": "1.8",
+    "versionCode": 1,
+    "versionLabel": "1.9",
     "watchapp": {
         "watchface": true
     }

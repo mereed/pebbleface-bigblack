@@ -28,8 +28,7 @@ function saveLocalData(config) {
   localStorage.setItem("invert", parseInt(config.invert)); 
   localStorage.setItem("bluetoothvibe", parseInt(config.bluetoothvibe)); 
   localStorage.setItem("hourlyvibe", parseInt(config.hourlyvibe)); 
-  localStorage.setItem("germanlang", parseInt(config.germanlang)); 
-  localStorage.setItem("russianlang", parseInt(config.russianlang)); 
+  localStorage.setItem("language", parseInt(config.language)); 
   
   loadLocalData();
 
@@ -40,9 +39,8 @@ function loadLocalData() {
 	mConfig.invert = parseInt(localStorage.getItem("invert"));
 	mConfig.bluetoothvibe = parseInt(localStorage.getItem("bluetoothvibe"));
 	mConfig.hourlyvibe = parseInt(localStorage.getItem("hourlyvibe"));
-	mConfig.germanlang = parseInt(localStorage.getItem("germanlang"));
-	mConfig.russianlang = parseInt(localStorage.getItem("russianlang"));
-	mConfig.configureUrl = "http://www.themapman.com/pebblewatch/pebbleconfig3.html";
+	mConfig.language = parseInt(localStorage.getItem("language"));
+	mConfig.configureUrl = "http://www.themapman.com/pebblewatch/pebbleconfig4b.html";
 
 	if(isNaN(mConfig.blink)) {
 		mConfig.blink = 1;
@@ -56,12 +54,10 @@ function loadLocalData() {
 	if(isNaN(mConfig.hourlyvibe)) {
 		mConfig.hourlyvibe = 0;
 	}
-    if(isNaN(mConfig.germanlang)) {
-		mConfig.germanlang = 0;
+    if(isNaN(mConfig.language)) {
+		mConfig.language = 0;
 	}
-	if(isNaN(mConfig.russianlang)) {
-		mConfig.russianlang = 0;
-	}
+
 
   //console.log("loadLocalData() " + JSON.stringify(mConfig));
 }
@@ -72,7 +68,6 @@ function returnConfigToPebble() {
     "invert":parseInt(mConfig.invert), 
     "bluetoothvibe":parseInt(mConfig.bluetoothvibe), 
     "hourlyvibe":parseInt(mConfig.hourlyvibe),
-    "germanlang":parseInt(mConfig.germanlang),
-    "russianlang":parseInt(mConfig.russianlang),
+    "language":parseInt(mConfig.language),
   });    
 }

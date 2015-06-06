@@ -7,14 +7,13 @@ static Window *window;
 static uint8_t batteryPercent;
 
 static AppSync sync;
-static uint8_t sync_buffer[160];
+static uint8_t sync_buffer[256];
 
 static int blink;
 static int invert;
 static int bluetoothvibe;
 static int hourlyvibe;
-static int germanlang;
-static int russianlang;
+static int language;
 
 static bool appStarted = false;
 
@@ -23,8 +22,7 @@ enum {
   INVERT_KEY = 0x1,
   BLUETOOTHVIBE_KEY = 0x2,
   HOURLYVIBE_KEY = 0x3,
-  GERMAN_KEY = 0x4,
-  RUSSIAN_KEY = 0x5
+  LANGUAGE_KEY = 0x4
 };
 
 static GBitmap *separator_image;
@@ -34,7 +32,9 @@ static GBitmap *bluetooth_image;
 static BitmapLayer *bluetooth_layer;
 
 static GBitmap *battery_image;
+static GBitmap *battery_image100;
 static BitmapLayer *battery_image_layer;
+static BitmapLayer *battery_image100_layer;
 static BitmapLayer *battery_layer;
 
 static GBitmap *time_format_image;
@@ -79,6 +79,84 @@ const int DAY_NAME_IMAGE_RUSSIAN_RESOURCE_IDS[] = {
   RESOURCE_ID_IMAGE_DAY_NAME_RUS_SAT
 };	
 	
+static GBitmap *fday_name_image;
+static BitmapLayer *fday_name_layer;
+
+const int DAY_NAME_IMAGE_FRENCH_RESOURCE_IDS[] = {
+  RESOURCE_ID_IMAGE_DAY_NAME_FRE_SUN,
+  RESOURCE_ID_IMAGE_DAY_NAME_FRE_MON,
+  RESOURCE_ID_IMAGE_DAY_NAME_FRE_TUE,
+  RESOURCE_ID_IMAGE_DAY_NAME_FRE_WED,
+  RESOURCE_ID_IMAGE_DAY_NAME_FRE_THU,
+  RESOURCE_ID_IMAGE_DAY_NAME_FRE_FRI,
+  RESOURCE_ID_IMAGE_DAY_NAME_FRE_SAT
+};	
+
+static GBitmap *cday_name_image;
+static BitmapLayer *cday_name_layer;
+
+const int DAY_NAME_IMAGE_CHINESE_RESOURCE_IDS[] = {
+  RESOURCE_ID_IMAGE_DAY_NAME_CH_SUN,
+  RESOURCE_ID_IMAGE_DAY_NAME_CH_MON,
+  RESOURCE_ID_IMAGE_DAY_NAME_CH_TUE,
+  RESOURCE_ID_IMAGE_DAY_NAME_CH_WED,
+  RESOURCE_ID_IMAGE_DAY_NAME_CH_THU,
+  RESOURCE_ID_IMAGE_DAY_NAME_CH_FRI,
+  RESOURCE_ID_IMAGE_DAY_NAME_CH_SAT
+};
+
+static GBitmap *iday_name_image;
+static BitmapLayer *iday_name_layer;
+
+const int DAY_NAME_IMAGE_ITALIAN_RESOURCE_IDS[] = {
+  RESOURCE_ID_IMAGE_DAY_NAME_IT_SUN,
+  RESOURCE_ID_IMAGE_DAY_NAME_IT_MON,
+  RESOURCE_ID_IMAGE_DAY_NAME_IT_TUE,
+  RESOURCE_ID_IMAGE_DAY_NAME_IT_WED,
+  RESOURCE_ID_IMAGE_DAY_NAME_IT_THU,
+  RESOURCE_ID_IMAGE_DAY_NAME_IT_FRI,
+  RESOURCE_ID_IMAGE_DAY_NAME_IT_SAT
+};
+
+static GBitmap *kday_name_image;
+static BitmapLayer *kday_name_layer;
+
+const int DAY_NAME_IMAGE_KOREAN_RESOURCE_IDS[] = {
+  RESOURCE_ID_IMAGE_DAY_NAME_KO_SUN,
+  RESOURCE_ID_IMAGE_DAY_NAME_KO_MON,
+  RESOURCE_ID_IMAGE_DAY_NAME_KO_TUE,
+  RESOURCE_ID_IMAGE_DAY_NAME_KO_WED,
+  RESOURCE_ID_IMAGE_DAY_NAME_KO_THU,
+  RESOURCE_ID_IMAGE_DAY_NAME_KO_FRI,
+  RESOURCE_ID_IMAGE_DAY_NAME_KO_SAT
+};
+
+static GBitmap *jday_name_image;
+static BitmapLayer *jday_name_layer;
+
+const int DAY_NAME_IMAGE_JAPANESE_RESOURCE_IDS[] = {
+  RESOURCE_ID_IMAGE_DAY_NAME_JA_SUN,
+  RESOURCE_ID_IMAGE_DAY_NAME_JA_MON,
+  RESOURCE_ID_IMAGE_DAY_NAME_JA_TUE,
+  RESOURCE_ID_IMAGE_DAY_NAME_JA_WED,
+  RESOURCE_ID_IMAGE_DAY_NAME_JA_THU,
+  RESOURCE_ID_IMAGE_DAY_NAME_JA_FRI,
+  RESOURCE_ID_IMAGE_DAY_NAME_JA_SAT
+};
+
+static GBitmap *sday_name_image;
+static BitmapLayer *sday_name_layer;
+
+const int DAY_NAME_IMAGE_SPANISH_RESOURCE_IDS[] = {
+  RESOURCE_ID_IMAGE_DAY_NAME_SP_SUN,
+  RESOURCE_ID_IMAGE_DAY_NAME_SP_MON,
+  RESOURCE_ID_IMAGE_DAY_NAME_SP_TUE,
+  RESOURCE_ID_IMAGE_DAY_NAME_SP_WED,
+  RESOURCE_ID_IMAGE_DAY_NAME_SP_THU,
+  RESOURCE_ID_IMAGE_DAY_NAME_SP_FRI,
+  RESOURCE_ID_IMAGE_DAY_NAME_SP_SAT
+};
+
 #define TOTAL_DATE_DIGITS 2	
 static GBitmap *date_digits_images[TOTAL_DATE_DIGITS];
 static BitmapLayer *date_digits_layers[TOTAL_DATE_DIGITS];
@@ -150,16 +228,146 @@ void set_invert_color(bool invert) {
   // No action required
 }
 
+
+void change_language() {
+
+    switch (language) {
+		case 0: //english
+			layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(fday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(iday_name_layer), true);
+	 		layer_set_hidden(bitmap_layer_get_layer(rday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(cday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(kday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(jday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(sday_name_layer), true);
+		
+			layer_set_hidden(bitmap_layer_get_layer(day_name_layer), false);
+		
+		break;
+		
+		case 1:  //chinese		
+			layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(fday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(iday_name_layer), true);
+	 		layer_set_hidden(bitmap_layer_get_layer(rday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(day_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(kday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(jday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(sday_name_layer), true);
+		
+			layer_set_hidden(bitmap_layer_get_layer(cday_name_layer), false);		
+		
+			break;
+		
+		case 2:  //french		
+			layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(day_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(iday_name_layer), true);
+	 		layer_set_hidden(bitmap_layer_get_layer(rday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(cday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(kday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(jday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(sday_name_layer), true);
+		
+			layer_set_hidden(bitmap_layer_get_layer(fday_name_layer), false);		
+		
+			break;
+		
+		case 3:  //german
+			layer_set_hidden(bitmap_layer_get_layer(day_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(fday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(iday_name_layer), true);
+	 		layer_set_hidden(bitmap_layer_get_layer(rday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(cday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(kday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(jday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(sday_name_layer), true);
+		
+			layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), false);		
+		
+			break;
+					
+		case 4:  //italian		
+			layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(fday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(day_name_layer), true);
+	 		layer_set_hidden(bitmap_layer_get_layer(rday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(cday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(kday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(jday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(sday_name_layer), true);
+		
+			layer_set_hidden(bitmap_layer_get_layer(iday_name_layer), false);		
+		
+			break;
+		
+		case 5:  //russian		
+			layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(fday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(iday_name_layer), true);
+	 		layer_set_hidden(bitmap_layer_get_layer(day_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(cday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(kday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(jday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(sday_name_layer), true);
+		
+			layer_set_hidden(bitmap_layer_get_layer(rday_name_layer), false);		
+		
+			break;
+		
+		case 6:  //japanese		
+			layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(fday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(iday_name_layer), true);
+	 		layer_set_hidden(bitmap_layer_get_layer(day_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(cday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(rday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(kday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(sday_name_layer), true);
+		
+			layer_set_hidden(bitmap_layer_get_layer(jday_name_layer), false);		
+		
+			break;
+	
+		case 7:  //korean		
+			layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(fday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(iday_name_layer), true);
+	 		layer_set_hidden(bitmap_layer_get_layer(day_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(cday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(jday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(sday_name_layer), true);
+		
+			layer_set_hidden(bitmap_layer_get_layer(kday_name_layer), false);		
+		
+			break;
+		
+		case 8:  //spanish		
+			layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(fday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(iday_name_layer), true);
+	 		layer_set_hidden(bitmap_layer_get_layer(day_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(cday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(kday_name_layer), true);
+			layer_set_hidden(bitmap_layer_get_layer(jday_name_layer), true);
+		
+			layer_set_hidden(bitmap_layer_get_layer(sday_name_layer), false);		
+		
+			break;	
+    }    
+}
+
 void change_battery_icon(bool charging) {
-  gbitmap_destroy(battery_image);
-  if(charging) {
+
+	if(charging) {
     battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY_CHARGE);
   }
   else {
     battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY);
   }  
   bitmap_layer_set_bitmap(battery_image_layer, battery_image);
-  layer_mark_dirty(bitmap_layer_get_layer(battery_image_layer));
+	layer_mark_dirty(bitmap_layer_get_layer(battery_image_layer));
 }
 
 static void set_container_image(GBitmap **bmp_image, BitmapLayer *bmp_layer, const int resource_id, GPoint origin) {
@@ -206,30 +414,11 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
       hourlyvibe = new_tuple->value->uint8 != 0;
 	  persist_write_bool(HOURLYVIBE_KEY, hourlyvibe);	  
       break;	
-	case GERMAN_KEY:
-      germanlang = new_tuple->value->uint8 != 0;
-	  persist_write_bool(GERMAN_KEY, germanlang);	  
-	
-		if (germanlang) {
-           layer_set_hidden(bitmap_layer_get_layer(day_name_layer), true);
-	  	   layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), false);
-        }  else {
-  			layer_set_hidden(bitmap_layer_get_layer(day_name_layer), false);
-	  		layer_set_hidden(bitmap_layer_get_layer(gday_name_layer), true);
-        }
-      break;
 		
-	case RUSSIAN_KEY:
-      russianlang = new_tuple->value->uint8 != 0;
-	  persist_write_bool(RUSSIAN_KEY, russianlang);	  
-	
-		if (russianlang) {
-           layer_set_hidden(bitmap_layer_get_layer(day_name_layer), true);
-	  	   layer_set_hidden(bitmap_layer_get_layer(rday_name_layer), false);
-        }  else {
-  			layer_set_hidden(bitmap_layer_get_layer(day_name_layer), false);
-	  		layer_set_hidden(bitmap_layer_get_layer(rday_name_layer), true);
-        }
+	case LANGUAGE_KEY:
+      language = new_tuple->value->uint8;
+	  persist_write_bool(LANGUAGE_KEY, language);	  
+	  change_language();
       break;
   }
 }
@@ -240,6 +429,7 @@ static void update_battery(BatteryChargeState charge_state) {
 
   if(batteryPercent==100) {
         change_battery_icon(false);
+        layer_set_hidden(bitmap_layer_get_layer(battery_image100_layer), false);
         layer_set_hidden(bitmap_layer_get_layer(battery_layer), false);
     for (int i = 0; i < TOTAL_BATTERY_PERCENT_DIGITS; ++i) {
       layer_set_hidden(bitmap_layer_get_layer(battery_percent_layers[i]), true);
@@ -289,6 +479,12 @@ unsigned short get_display_hour(unsigned short hour) {
 
 static void update_days(struct tm *tick_time) {
 
+  set_container_image(&sday_name_image, sday_name_layer, DAY_NAME_IMAGE_SPANISH_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 35));
+  set_container_image(&jday_name_image, jday_name_layer, DAY_NAME_IMAGE_JAPANESE_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 35));
+  set_container_image(&kday_name_image, kday_name_layer, DAY_NAME_IMAGE_KOREAN_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 35));
+  set_container_image(&fday_name_image, fday_name_layer, DAY_NAME_IMAGE_FRENCH_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 25));
+  set_container_image(&iday_name_image, iday_name_layer, DAY_NAME_IMAGE_ITALIAN_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 25));
+  set_container_image(&cday_name_image, cday_name_layer, DAY_NAME_IMAGE_CHINESE_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 35));
   set_container_image(&rday_name_image, rday_name_layer, DAY_NAME_IMAGE_RUSSIAN_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 15));
   set_container_image(&gday_name_image, gday_name_layer, DAY_NAME_IMAGE_GERMAN_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 15));
   set_container_image(&day_name_image, day_name_layer, DAY_NAME_IMAGE_RESOURCE_IDS[tick_time->tm_wday], GPoint(65, 15));
@@ -311,7 +507,7 @@ static void update_hours(struct tm *tick_time) {
 
   if (!clock_is_24h_style()) {
     if (tick_time->tm_hour >= 12) {
-      set_container_image(&time_format_image, time_format_layer, RESOURCE_ID_IMAGE_PM_MODE, GPoint(60, 2));
+      set_container_image(&time_format_image, time_format_layer, RESOURCE_ID_IMAGE_PM_MODE, GPoint(62, 2));
       layer_set_hidden(bitmap_layer_get_layer(time_format_layer), false);
     } 
     else {
@@ -336,7 +532,7 @@ static void update_seconds(struct tm *tick_time) {
   }
   else {
     if(layer_get_hidden(bitmap_layer_get_layer(separator_layer))) {
-      layer_set_hidden(bitmap_layer_get_layer(separator_layer), false);
+      layer_set_hidden(bitmap_layer_get_layer(separator_layer), true);
     }
   }
 }
@@ -364,8 +560,8 @@ static void init(void) {
   memset(&battery_percent_layers, 0, sizeof(battery_percent_layers));
   memset(&battery_percent_image, 0, sizeof(battery_percent_image));
 
-  const int inbound_size = 160;
-  const int outbound_size = 160;
+  const int inbound_size = 256;
+  const int outbound_size = 256;
   app_message_open(inbound_size, outbound_size);  
 
   window = window_create();
@@ -409,9 +605,22 @@ static void init(void) {
 	
   layer_add_child(window_layer, bitmap_layer_get_layer(battery_image_layer));
   layer_add_child(window_layer, bitmap_layer_get_layer(battery_layer));
-  
+
+	
+  battery_image100 = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY100);
+  GRect frame6 = (GRect) {
+    .origin = { .x = 22, .y = 1 },
+    .size = battery_image100->bounds.size
+  };
+  battery_image100_layer = bitmap_layer_create(frame6);
+  battery_image_layer = bitmap_layer_create(frame6);
+  bitmap_layer_set_bitmap(battery_image100_layer, battery_image100);	
+  layer_add_child(window_layer, bitmap_layer_get_layer(battery_image100_layer));
+  layer_set_hidden(bitmap_layer_get_layer(battery_image100_layer), true);
+
+	
   GRect frame5 = (GRect) {
-    .origin = { .x = 60, .y = 2 },
+    .origin = { .x = 62, .y = 2 },
     .size = {.w = 19, .h = 8}
   };
   time_format_layer = bitmap_layer_create(frame5);
@@ -428,8 +637,20 @@ static void init(void) {
    layer_add_child(window_layer, bitmap_layer_get_layer(day_name_layer));	
    gday_name_layer = bitmap_layer_create(dummy_frame);
    layer_add_child(window_layer, bitmap_layer_get_layer(gday_name_layer));	
-	rday_name_layer = bitmap_layer_create(dummy_frame);
-   layer_add_child(window_layer, bitmap_layer_get_layer(rday_name_layer));	
+   rday_name_layer = bitmap_layer_create(dummy_frame);
+   layer_add_child(window_layer, bitmap_layer_get_layer(rday_name_layer));
+   fday_name_layer = bitmap_layer_create(dummy_frame);
+   layer_add_child(window_layer, bitmap_layer_get_layer(fday_name_layer));
+   iday_name_layer = bitmap_layer_create(dummy_frame);
+   layer_add_child(window_layer, bitmap_layer_get_layer(iday_name_layer));
+   cday_name_layer = bitmap_layer_create(dummy_frame);
+   layer_add_child(window_layer, bitmap_layer_get_layer(cday_name_layer));	
+   kday_name_layer = bitmap_layer_create(dummy_frame);
+   layer_add_child(window_layer, bitmap_layer_get_layer(kday_name_layer));	
+   jday_name_layer = bitmap_layer_create(dummy_frame);
+   layer_add_child(window_layer, bitmap_layer_get_layer(jday_name_layer));	
+   sday_name_layer = bitmap_layer_create(dummy_frame);
+   layer_add_child(window_layer, bitmap_layer_get_layer(sday_name_layer));	
 	
   for (int i = 0; i < TOTAL_TIME_DIGITS; ++i) {
     time_digits_layers[i] = bitmap_layer_create(dummy_frame);
@@ -453,8 +674,7 @@ static void init(void) {
     TupletInteger(INVERT_KEY, persist_read_bool(INVERT_KEY)),
     TupletInteger(BLUETOOTHVIBE_KEY, persist_read_bool(BLUETOOTHVIBE_KEY)),
     TupletInteger(HOURLYVIBE_KEY, persist_read_bool(HOURLYVIBE_KEY)),
-    TupletInteger(GERMAN_KEY, persist_read_bool(GERMAN_KEY)),
-    TupletInteger(RUSSIAN_KEY, persist_read_bool(RUSSIAN_KEY)),
+    TupletInteger(LANGUAGE_KEY, persist_read_bool(LANGUAGE_KEY)),
   };
   
   app_sync_init(&sync, sync_buffer, sizeof(sync_buffer), initial_values, ARRAY_LENGTH(initial_values),
@@ -510,6 +730,30 @@ static void deinit(void) {
   layer_remove_from_parent(bitmap_layer_get_layer(rday_name_layer));
   bitmap_layer_destroy(rday_name_layer);
   gbitmap_destroy(rday_name_image);
+	
+  layer_remove_from_parent(bitmap_layer_get_layer(cday_name_layer));
+  bitmap_layer_destroy(cday_name_layer);
+  gbitmap_destroy(cday_name_image);
+
+  layer_remove_from_parent(bitmap_layer_get_layer(jday_name_layer));
+  bitmap_layer_destroy(jday_name_layer);
+  gbitmap_destroy(jday_name_image);
+	
+  layer_remove_from_parent(bitmap_layer_get_layer(kday_name_layer));
+  bitmap_layer_destroy(kday_name_layer);
+  gbitmap_destroy(kday_name_image);
+	
+  layer_remove_from_parent(bitmap_layer_get_layer(sday_name_layer));
+  bitmap_layer_destroy(sday_name_layer);
+  gbitmap_destroy(sday_name_image);
+	
+  layer_remove_from_parent(bitmap_layer_get_layer(iday_name_layer));
+  bitmap_layer_destroy(iday_name_layer);
+  gbitmap_destroy(iday_name_image);
+	
+  layer_remove_from_parent(bitmap_layer_get_layer(fday_name_layer));
+  bitmap_layer_destroy(fday_name_layer);
+  gbitmap_destroy(fday_name_image);
 	
   for (int i = 0; i < TOTAL_DATE_DIGITS; i++) {
     layer_remove_from_parent(bitmap_layer_get_layer(date_digits_layers[i]));
